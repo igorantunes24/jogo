@@ -1,0 +1,78 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  background: #06050b; /* Fundo escuro */
+  font-family: sans-serif;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 🖼️ Contêiner Principal do Tabuleiro */
+.memory-game {
+  width: 640px; /* Largura total do tabuleiro */
+  height: 640px; /* Altura total do tabuleiro */
+  margin: auto;
+  
+  /* Grid: Organiza as cartas em 4 colunas e 4 linhas (ajuste para 16 cartas) */
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  grid-template-rows: repeat(4, 1fr);
+  gap: 10px; /* Espaço entre as cartas */
+
+  /* Para que a função shuffle do JS funcione */
+  perspective: 1000px;
+}
+
+/* 🃏 Estilo Básico da Carta */
+.memory-card {
+  width: 100%;
+  height: 100%;
+  
+  /* Animação e Virada */
+  position: relative; /* Essencial para as faces */
+  transform: scale(1);
+  transform-style: preserve-3d; /* Permite o efeito 3D ao virar */
+  transition: transform .5s; /* Velocidade da animação */
+  cursor: pointer;
+}
+
+/* Efeito leve ao passar o mouse */
+.memory-card:hover {
+  transform: scale(1.05);
+}
+
+/* 🔄 Efeito de Virar a Carta (Adicionado pelo JavaScript) */
+.memory-card.flip {
+  transform: rotateY(180deg);
+}
+
+/* 👤 Faces da Carta */
+.front-face,
+.back-face {
+  width: 100%;
+  height: 100%;
+  padding: 5px; /* Pequena margem interna para as imagens */
+  position: absolute;
+  border-radius: 5px;
+  background: #fff; /* Fundo branco das faces */
+  
+  /* Garante que a face oposta fique escondida quando a carta vira */
+  backface-visibility: hidden; 
+}
+
+/* 🎨 Estilo Específico do Verso (Fundo da Carta) */
+.back-face {
+  background: #151520; /* Cor escura do verso */
+  border: 3px solid #ff7f11; /* Borda laranja (opcional) */
+}
+
+/* 💡 A face da frente já nasce 'virada' no CSS para que o verso seja o primeiro a aparecer */
+.front-face {
+  transform: rotateY(180deg);
+}
