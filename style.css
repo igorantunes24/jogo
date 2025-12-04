@@ -5,50 +5,96 @@
     box-sizing: border-box;
 }
 
-/* Estilo do corpo da página (Fundo e Centralização) */
+/* --- ESTILO DO CORPO (FUNDO E CENTRALIZAÇÃO) --- */
 body {
     height: 100vh;
     display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    background: linear-gradient(to right, #0087B2, #2c3e50); /* Fundo com gradiente */
+    justify-content: center; /* Centraliza o tabuleiro horizontalmente */
+    align-items: center; /* Centraliza o tabuleiro verticalmente */
+    background: linear-gradient(to bottom right, #2c3e50, #0087B2); /* Fundo com gradiente */
     font-family: 'Arial', sans-serif;
 }
 
-/* --- Container do Jogo (O Tabuleiro) --- */
+/* --- TABULEIRO DO JOGO (memory-game) --- */
 .memory-game {
-    width: 640px; /* Largura total (pode ser ajustada) */
-    height: 640px; /* Altura total (pode ser ajustada) */
+    width: 640px; /* Tamanho fixo do tabuleiro */
+    height: 640px;
     display: flex;
     flex-wrap: wrap; /* Permite que as cartas quebrem linha */
     gap: 10px; /* Espaçamento entre as cartas */
     perspective: 1000px; /* Adiciona perspectiva para o efeito 3D */
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1); /* Um fundo levemente transparente para o tabuleiro */
+    background-color: rgba(0, 0, 0, 0.1); /* Fundo sutil para o tabuleiro */
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* --- Estilo de Cada Carta --- */
+/* --- ESTILO DE CADA CARTA (memory-card) --- */
 .memory-card {
-    width: calc(25% - 10px); /* 4 cartas por linha (25% - espaço) */
-    height: calc(33.333% - 10px); /* 3 linhas de cartas (33.333% - espaço) */
-    position: relative; /* Essencial para o posicionamento da frente e do verso */
-    transform-style: preserve-3d; /* Garante que os filhos (frente/verso) participem do 3D */
+    /* Calcula o tamanho para caber 4 cartas por linha, subtraindo o espaço (gap) */
+    width: calc(25% - 10px); 
+    /* Calcula o tamanho para caber 3 linhas de cartas */
+    height: calc(33.333% - 10px); 
+    position: relative; 
+    transform-style: preserve-3d; /* Garante que os filhos participem do 3D */
     transition: transform 0.5s; /* Transição suave ao virar */
     cursor: pointer;
 }
 
-/* Efeito ao virar a carta */
+/* Efeito ao VIRAR a carta (adicionada via JavaScript) */
 .memory-card.flip {
     transform: rotateY(180deg);
 }
 
-/* Efeito de Match (Par Encontrado) */
+/* Efeito de MATCH (adicionada via JavaScript) */
 .memory-card.match {
-    /* Levemente mais opaca e com uma sombra de sucesso */
-    box-shadow: 0 0 15px #2ecc71;
-    cursor: default; /* Remove o cursor de clique após o match */
+    box-shadow: 0 0 15px #2ecc71; /* Sombra verde de sucesso */
+    cursor: default; /* Remove o cursor de clique */
+    /* Você pode adicionar um leve zoom ou opacidade para um efeito extra */
+    /* transform: scale(1.05); */
 }
 
-/* --- Frente e Verso
+/* --- FRENTE E VERSO DA CARTA --- */
+.front-face,
+.back-face {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 8px;
+    /* O SEGREDO: Esconde o lado que não está virado para o usuário */
+    backface-visibility: hidden; 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4em; /* Tamanho grande para o emoji/interrogação */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Verso da Carta (A capa inicial) */
+.back-face {
+    background: #34495e; /* Azul escuro */
+    color: #fff; 
+    border: 3px solid #f1c40f; /* Borda amarela */
+    z-index: 2; /* Garante que esteja acima da frente quando não está virada */
+}
+
+/* Frente da Carta (O emoji) */
+.front-face {
+    background: #ecf0f1; /* Fundo claro para o emoji */
+    transform: rotateY(180deg); /* Começa virada para que o verso seja visto */
+}
+
+/* --- RESPONSIVIDADE (Para telas menores) --- */
+@media screen and (max-width: 660px) {
+    .memory-game {
+        width: 95vw; /* Ocupa 95% da largura da tela */
+        height: 95vw; /* Mantém a proporção quadrada */
+        gap: 5px; 
+    }
+
+    .memory-card {
+        width: calc(25% - 5px); 
+        height: calc(33.333% - 5px);
+    }
+}
