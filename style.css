@@ -1,78 +1,54 @@
+/* Reset básico para garantir consistência entre navegadores */
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
+/* Estilo do corpo da página (Fundo e Centralização) */
 body {
-  height: 100vh;
-  display: flex;
-  background: #06050b; /* Fundo escuro */
-  font-family: sans-serif;
-  justify-content: center;
-  align-items: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    background: linear-gradient(to right, #0087B2, #2c3e50); /* Fundo com gradiente */
+    font-family: 'Arial', sans-serif;
 }
 
-/* 🖼️ Contêiner Principal do Tabuleiro */
+/* --- Container do Jogo (O Tabuleiro) --- */
 .memory-game {
-  width: 640px; /* Largura total do tabuleiro */
-  height: 640px; /* Altura total do tabuleiro */
-  margin: auto;
-  
-  /* Grid: Organiza as cartas em 4 colunas e 4 linhas (ajuste para 16 cartas) */
-  display: grid; 
-  grid-template-columns: repeat(4, 1fr); 
-  grid-template-rows: repeat(4, 1fr);
-  gap: 10px; /* Espaço entre as cartas */
-
-  /* Para que a função shuffle do JS funcione */
-  perspective: 1000px;
+    width: 640px; /* Largura total (pode ser ajustada) */
+    height: 640px; /* Altura total (pode ser ajustada) */
+    display: flex;
+    flex-wrap: wrap; /* Permite que as cartas quebrem linha */
+    gap: 10px; /* Espaçamento entre as cartas */
+    perspective: 1000px; /* Adiciona perspectiva para o efeito 3D */
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1); /* Um fundo levemente transparente para o tabuleiro */
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* 🃏 Estilo Básico da Carta */
+/* --- Estilo de Cada Carta --- */
 .memory-card {
-  width: 100%;
-  height: 100%;
-  
-  /* Animação e Virada */
-  position: relative; /* Essencial para as faces */
-  transform: scale(1);
-  transform-style: preserve-3d; /* Permite o efeito 3D ao virar */
-  transition: transform .5s; /* Velocidade da animação */
-  cursor: pointer;
+    width: calc(25% - 10px); /* 4 cartas por linha (25% - espaço) */
+    height: calc(33.333% - 10px); /* 3 linhas de cartas (33.333% - espaço) */
+    position: relative; /* Essencial para o posicionamento da frente e do verso */
+    transform-style: preserve-3d; /* Garante que os filhos (frente/verso) participem do 3D */
+    transition: transform 0.5s; /* Transição suave ao virar */
+    cursor: pointer;
 }
 
-/* Efeito leve ao passar o mouse */
-.memory-card:hover {
-  transform: scale(1.05);
-}
-
-/* 🔄 Efeito de Virar a Carta (Adicionado pelo JavaScript) */
+/* Efeito ao virar a carta */
 .memory-card.flip {
-  transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
-/* 👤 Faces da Carta */
-.front-face,
-.back-face {
-  width: 100%;
-  height: 100%;
-  padding: 5px; /* Pequena margem interna para as imagens */
-  position: absolute;
-  border-radius: 5px;
-  background: #fff; /* Fundo branco das faces */
-  
-  /* Garante que a face oposta fique escondida quando a carta vira */
-  backface-visibility: hidden; 
+/* Efeito de Match (Par Encontrado) */
+.memory-card.match {
+    /* Levemente mais opaca e com uma sombra de sucesso */
+    box-shadow: 0 0 15px #2ecc71;
+    cursor: default; /* Remove o cursor de clique após o match */
 }
 
-/* 🎨 Estilo Específico do Verso (Fundo da Carta) */
-.back-face {
-  background: #151520; /* Cor escura do verso */
-  border: 3px solid #ff7f11; /* Borda laranja (opcional) */
-}
-
-/* 💡 A face da frente já nasce 'virada' no CSS para que o verso seja o primeiro a aparecer */
-.front-face {
-  transform: rotateY(180deg);
-}
+/* --- Frente e Verso
